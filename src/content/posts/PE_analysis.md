@@ -36,3 +36,21 @@ multilanguage support.
 ![PE section](/images/PE_Section.png)
 
 
+### Analyzing PE section of Keylogger.
+Tool used - PE-Bear
+
+![PE section of keylogger](/images/PE_keylogger.png)
+
+Here the image tells us that it was compiled at `Friday, 05.05.2023 21:31:31 UTC`  Indicating it was an old keylogger and antivirus programs might contain signatures for the malware
+
+Section information for potential Keylogger
+
+
+| .section | Virtual size  | Raw size |
+| ------- | --------- | -------|
+| .text    | 1E6DE4 | 1E6E00 | 
+| .rsrc    | 56E | 600 | 
+| .reloc    | c | 200 | 
+
+
+
