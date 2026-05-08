@@ -1,5 +1,5 @@
 ---
-title: "Solving Lab 1.1 from Practical Malware Analysis "
+title: "Solving Lab 1 from Practical Malware Analysis "
 date: 2026-05-07
 tags: [Labs]
 description: Solving solution from lab 1. 
@@ -53,3 +53,38 @@ Where as string on `Lab01-01.dll` we can see communication to 127.26.152.13 indi
 7. What would you guess is the purpose of these files?
 
 We can assume `kerne132.dll` is a backdoor that can be executed with an .exe program prob the lab01-01.exe that can run or install the content of dll.
+
+
+## Lab 1.2
+
+Analyze the file `Lab01-02.exe`.
+
+1. Upload the Lab01-02.exe file to http://www.VirusTotal.com/. Does it match
+any existing antivirus definitions?
+
+Uploading the .exe to virustotal it does match to existing antivirus defintions. It's labled as `trojan.ulise/trojanclicker`
+
+2. Are there any indications that this file is packed or obfuscated? If so,
+what are these indicators? If the file is packed, unpack it if possible.
+
+Using `PEID` we can get that data that it's packed. It's packed using UPX from `www.upx.sourceforge.net `
+We can unpack the file using `UPX`
+Using `upd -d file_name`
+
+`16384 <-      3072   18.75%    win32/pe     Lab01-02.exe`
+
+3. Do any imports hint at this program’s functionality? If so, which imports
+are they and what do they tell you?
+
+Import of dll `WININET.dll` indicates that it has functionality to connect to internet. `InternetOpenA` to connect to inernet.
+
+
+4. What host- or network-based indicators could be used to identify this
+malware on infected machines?
+
+Using `strings` on .exe can help to retrieve following certain strings:
+`InternetOpenUrlA,InternetOpenA,MalService,HGL345,http://www.malwareanalysisbook.com`
+It indicates that it is used to connect to that site and retreive the data
+`InternetOpenUrl function parses the URL string, establishes a connection to the server, and prepares to download the data identified by the URL.
+using this info we can use it as a network-based indicator to identify this malware on infected machines.
+`
