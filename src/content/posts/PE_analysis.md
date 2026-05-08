@@ -1,7 +1,7 @@
 ---
 title: "Analysis of A PE header"
 date: 2026-05-07
-tags: [Learning]
+tags: [Learning , Malware_Analysis]
 description: Analyzing PE sections 
 ---
 
