@@ -1,8 +1,8 @@
 ---
-title: "Solving Lab 1 from Practical Malware Analysis "
-date: 2026-05-07
+title: "Solving Lab 3 from Practical Malware Analysis "
+date: 2026-05-09
 tags: [Labs]
-description: Solving solution from lab 1. 
+description: Solving solution from lab 3. 
 ---
 
 # Lab 3.1
