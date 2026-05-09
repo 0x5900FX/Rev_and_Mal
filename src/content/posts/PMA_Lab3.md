@@ -80,9 +80,14 @@ HKU\S-1-5-21-643046334-913388524-3226014734-1000\SOFTWARE\Microsoft\Windows NT\C
 HKU\S-1-5-21-643046334-913388524-3226014734-1000\SOFTWARE\Sysinternals\Process Monitor\PropertySheetDialog: 2C 00 00 00 00 00 00 00 01 00 00 00 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF E3 02 00 00 B4 00 00 00 EC 05 00 00 4F 03 00 00
 
 ----------------------------------
+
+"Edit: After reviewing, many registry changes were from my analysis tools, not the malware itself. Next time I'll take a clean baseline before execution."
+
 ```
 
 
 ### 3. Are there any useful network-based signatures for this malware? If so, what are they?
 
 No using Wireshark to intercept the data there is no any network-based signature as currently while doing dynamic analysis. Static anaylysis showed up network info about `www.practicalmalwareanalysis.com`
+This conclusion was on basis that `InetSim` was running on another VM as `DNS server`.
+
