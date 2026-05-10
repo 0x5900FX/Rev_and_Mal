@@ -134,3 +134,32 @@ X-X
 ### 6. Are there any useful network-based signatures for this malware?
 
 X-X
+
+
+Moving onto Next lab
+
+
+# Lab 3.3
+
+Execute the malware found in the file Lab03-03.exe while monitoring it using
+basic dynamic analysis tools in a safe environment.
+
+### 1. What do you notice when monitoring this malware with Process Explorer?
+
+IT is using schvhost.exe as a child process 
+
+### 2. Can you identify any live memory modifications?
+
+Checking memory and image we can identify the strings inclusion like 'practicalmalwareanalysis.log` 
+
+### 3. What are the malware’s host-based indicators?
+
+Create a log file named after `practicalmalwareanalysis.log`
+
+### 4. What is the purpose of this program?
+
+It's a keylogger that uses process replacement to replace `svchost.exe` .
+
+
+---
+
