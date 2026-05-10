@@ -138,6 +138,8 @@ X-X
 
 Moving onto Next lab
 
+---
+---
 
 # Lab 3.3
 
@@ -160,6 +162,23 @@ Create a log file named after `practicalmalwareanalysis.log`
 
 It's a keylogger that uses process replacement to replace `svchost.exe` .
 
-
+--- 
 ---
 
+# Lab 3.4
+
+Analyze the malware found in the file Lab03-04.exe using basic dynamic analysis
+tools. (This program is analyzed further in the Chapter 9 labs.)
+
+### 1. What happens when you run this file?
+
+It gets automatically deleted.
+
+### 2. What is causing the roadblock in dynamic analysis?
+
+Maybe there is certain condition mechanism causing the roadblock in dynamic analysis.
+
+
+### 3. Are there other ways to run this program?
+
+Tried to run using command line same problem again. File is deleted.
