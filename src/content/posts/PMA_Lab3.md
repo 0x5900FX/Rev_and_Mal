@@ -91,3 +91,46 @@ HKU\S-1-5-21-643046334-913388524-3226014734-1000\SOFTWARE\Sysinternals\Process M
 No using Wireshark to intercept the data there is no any network-based signature as currently while doing dynamic analysis. Static anaylysis showed up network info about `www.practicalmalwareanalysis.com`
 This conclusion was on basis that `InetSim` was running on another VM as `DNS server`.
 
+
+
+# Lab 3-2
+Analyze the malware found in the file Lab03-02.dll using basic dynamic analysis tools.
+
+### 1. How can you get this malware to install itself?
+
+Analyzing the malware we can get the following exports
+Install
+installA
+ServiceMain
+uninstallA
+UninstallService
+
+
+rundll32 'C:\Users\flare\Documents\Malware Samples\PracticalMalwareAnalysis-Labs-master\PracticalMalwareAnalysis-Labs\Practical Malware Analysis Labs\BinaryCollection\Chapter_3L\Lab03-02.dll' install
+
+---
+
+Low storage can't bother with installing win-7 so maybe do it  other day.
+!!! Error in running .dll in win10 vm so . SEE YAAA!!!!!!!!!!!!!!
+
+
+### 2. How would you get this malware to run after installation?
+
+X-X
+
+### 3. How can you find the process under which this malware is running?
+
+X-X
+
+### 4. Which filters could you set in order to use procmon to glean information?
+
+X-X
+
+### 5. What are the malware’s host-based indicators?
+
+X-X
+
+
+### 6. Are there any useful network-based signatures for this malware?
+
+X-X
