@@ -112,7 +112,133 @@ rbp : 0x00
 
 ```
 
+---
 
+Learning to subtract in `asm`
+
+```
+
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+ 
+mov rax , 2
+add rax , 4  
+
+mov rbx , 4
+add rax , rbx
+
+sub rax , 7 # sub 7 from rax
+sub rax , 1 # sub 1 from rax
+
+
+Registers
+
+rax : 0x02
+
+rbx : 0x04
+
+rcx : 0x00
+
+rdx : 0x4ffffffffff7
+
+rsp : 0x4ffffffffed0
+
+```
+
+
+---
+---
+
+
+```
+mov rax , 10 
+mov rbx , 5
+sub rax , rbx  #sub rbx from rax and store in rax.
+
+Registers
+
+rax : 0x05
+
+rbx : 0x05
+
+rcx : 0x00
+
+rdx : 0x4ffffffffff7
+
+```
+
+
+`inc / dec `
+
+```
+_start:
+
+mov rax , 9 
+inc rax   #inc rom 9 to a -> 10
+mov rbx , 9
+inc rbx  #inc rom 9 to a -> 10
+
+Registers
+
+rax : 0x0a
+
+rbx : 0x0a
+
+rcx : 0x00
+
+```
+
+
+Some Exercies 
+`Getting the fibonacci numbers from the lession till now`.
+with only i immidiate value load
+
+
+
+```
+
+
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+#;! 0,1,2,3,5,8,13,21,34,55,89 
+mov rax ,0
+mov rbx  , rax 
+
+
+inc rbx 
+add rbx , rax 
+
+mov rcx ,rbx  
+mov rbp , rcx 
+add rbp , rcx 
+
+mov rsi , rbp
+add rsi , rcx
+
+mov rdi , rsi
+add rdi , rbp
+
+mov r8, rdi
+add r8, rsi
+
+mov r9, r8
+add r9, rdi
+
+```
 
 Disassembling `Hello world`.
 Using `cl.exe`.
