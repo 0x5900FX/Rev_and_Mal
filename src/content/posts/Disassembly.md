@@ -204,7 +204,6 @@ with only i immidiate value load
 
 ```
 
-
 ;#---------------------
 ;#  GNU Assembler file
 ;#  Syscall Hello World
@@ -219,8 +218,9 @@ mov rax ,0
 mov rbx  , rax 
 
 
-inc rbx 
+
 add rbx , rax 
+inc rbx 
 
 mov rcx ,rbx  
 mov rbp , rcx 
@@ -237,6 +237,55 @@ add r8, rsi
 
 mov r9, r8
 add r9, rdi
+
+mov r10 , r9
+add r10 , r8
+
+mov r11 , r10
+add r11 , r9
+
+mov r12 , r11 
+add r12 , r10
+
+
+Registers
+
+rax : 0x00
+
+rbx : 0x01
+
+rcx : 0x01
+
+rdx : 0x4ffffffffff7
+
+rsp : 0x4ffffffffed0
+
+rbp : 0x02
+
+rsi : 0x03
+
+rdi : 0x05
+
+r8  : 0x08
+
+r9  : 0x0d
+
+r10 : 0x15
+
+r11 : 0x22
+
+r12 : 0x59
+
+r13 : 0x90
+
+r14 : 0x00
+
+r15 : 0x00
+
+rip : 0x40104f
+
+
+
 
 ```
 
