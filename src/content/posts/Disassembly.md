@@ -2,7 +2,7 @@
 title: "Disassembly & learning x86"
 date: 2026-05-11
 tags: [Learning]
-description: S
+description: Learning Assembly as first part for diassembly.
 ---
 
 So basically, We are gonna learn basic of Assembly. We are gonna use `https://x64.halb.it/` to play the ground.
@@ -67,6 +67,48 @@ rdx : 0x480000000ac0c748 /We got extra value as it's 8 bytes wide. it's data is 
 rsp : 0x4ffffffffed0
 rbp : 0x00
 
+
+```
+
+---
+
+
+
+Learning to add in Asm
+
+
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+ 
+mov rax , 2  
+add rax , 4   # rax is 6 
+
+mov rbx , 4 	# rbx is 4
+add rax , rbx 	# rax is 0x0a
+
+
+Register value
+
+rax : 0x0a
+
+rbx : 0x04
+
+rcx : 0x00
+
+rdx : 0x4ffffffffff7
+
+rsp : 0x4ffffffffed0
+
+rbp : 0x00
 
 ```
 
