@@ -114,7 +114,7 @@ rbp : 0x00
 
 ---
 
-Learning to subtract in `asm`
+## Learning to subtract in `asm`
 
 ```
 
@@ -196,7 +196,7 @@ rcx : 0x00
 ```
 
 
-Some Exercies 
+## Some Exercies 
 `Getting the fibonacci numbers from the lession till now`.
 with only i immidiate value load
 
@@ -285,30 +285,168 @@ r15 : 0x00
 rip : 0x40104f
 
 
+```
+
+
+## Using memory in Assembly
+
+.data segment determine the actual data we can define in ram.
+rnew16 is a reference to a memory location to store somed data 
+
+rnew14: we need to determine how much data to store. 
+8bit 1 byte
+16bit 2 byte -> WORD
+32bit 4byte -> DOUBLE WORD (2WORD)
+64bit 8byte -> 	QUAD WORD (4WORD)
+
+LEA [load effective address]
+used to store address of a data
+LEA somedata_holder
+
 
 
 ```
+.intel_syntax noprefix
+.global _start
 
-Disassembling `Hello world`.
-Using `cl.exe`.
+.text
 
-``` C
-#include <stdio.h>
+_start:
 
-int main() {
-	printf("Hello , World");
-}
+mov rax, [rnew16]
+lea rbx, [rnew16]
 
-cl.exe .\haloworld.c /Fahalloworld.asm
-Microsoft (R) C/C++ Optimizing Compiler Version 19.50.35730 for x86
-Copyright (C) Microsoft Corporation.  All rights reserved.
 
-haloworld.c
-Microsoft (R) Incremental Linker Version 14.50.35730.0
-Copyright (C) Microsoft Corporation.  All rights reserved.
+.data
+rnew16:  .quad 0xaaaaaaaaaaaaaabb 
 
-/out:haloworld.exe
-haloworld.obj
+rax : 0xaaaaaaaaaaaaaabb 
+rbx : 0x402000 `#address of rnew16`
+
+rcx : 0x00
 ```
 
-s
+1 hex digit = 4 bits
+2 hex digits = 8 bits = 1 byte
+
+So:
+
+16 hex digits = 8 groups of 2 digits
+
+Example:
+
+12 34 56 78 9A BC DE F0
+
+Each group (12, 34, etc.) = 1 byte
+
+Count them:
+
+12 | 34 | 56 | 78 | 9A | BC | DE | F0
+ 1    2    3    4    5    6    7    8
+
+So:
+
+16 hex digits = 8 bytes
+ 
+ 
+rax register : 8byte -register
+eax register : 4byte -register subset of rax 
+ax register : 2byte register subset of eax 
+al \ ah " : 1 - 1byte register subset of ax  0xaaaaaaaaaaaa high-> [aa][bb] <	-low
+
+
+
+---
+
+## Challange 
+
+```
+Allocate the data and retrieve the data into registers and show em.
+/*
+0x402000: 13
+0x402001: d7
+0x402002: c0
+0x402003: ff
+0x402004: 02
+0x402005: 5a
+0x402006: 37
+0x402007: 00
+
+0x402008: 00
+0x402009: 55
+0x40200a: 93
+0x40200b: e1
+0x40200c: 6b
+0x40200d: ce
+0x40200e: cd
+0x40200f: a4
+
+0x402010: 8b
+0x402011: c2
+0x402012: 50
+0x402013: 8d
+0x402014: 25
+0x402015: c7
+0x402016: 1c
+0x402017: 08
+
+0x402018: 1a
+0x402019: 1a
+0x40201a: 1a
+*/
+```
+
+Solution 
+```
+
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+lea rax , [b1]
+mov rbx , [b1]
+add rax , 8
+mov rcx , [rax]
+add rax , 8
+mov r8 , [rax]
+add rax , 8
+mov r10d , [rax]
+
+
+.data
+b1: .quad 0x00375a02ffc0d713, 0x081cc7258d50c28b
+b2: .quad 0xa4cdce6be1935500
+b3: .long 0x1a1a1a
+
+```
+
+```Registers
+rax : 0x402018
+
+rbx : 0x375a02ffc0d713
+
+rcx : 0x081cc7258d50c28b
+
+rdx : 0x4ffffffffff7
+
+rsp : 0x4ffffffffed0
+
+rbp : 0x00
+
+rsi : 0x00
+
+rdi : 0x00
+
+r8  : 0xa4cdce6be1935500
+
+r9  : 0x00
+
+r10 : 0x1a1a1a
+
+r11 : 0x00
+
+r12 : 0x00
+
+r13 : 0x00
+```
