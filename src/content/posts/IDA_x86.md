@@ -1,3 +1,9 @@
+---
+title: "IDA & X86"
+date: 2026-05-15
+tags: [Learning]
+description: Learning Assembly in a new way
+---
 
 
 
