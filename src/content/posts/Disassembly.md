@@ -398,7 +398,10 @@ Allocate the data and retrieve the data into registers and show em.
 
 Solution 
 ```
-
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
 .intel_syntax noprefix
 .global _start
 .text
@@ -416,40 +419,12 @@ mov r10d , [rax]
 
 
 .data
-b1: .quad 0x00375a02ffc0d713, 0x081cc7258d50c28b
-b2: .quad 0xa4cdce6be1935500
-b3: .long 0x1a1a1a
+b1: .quad 0x00375a02ffc0d713
+.quad 0x081cc7258d50c28b
+.quad 0xa4cdce6be1935500
+.byte 0x1a, 0x1a, 0x1a
 
-```
 
-```Registers
-rax : 0x402018
-
-rbx : 0x375a02ffc0d713
-
-rcx : 0x081cc7258d50c28b
-
-rdx : 0x4ffffffffff7
-
-rsp : 0x4ffffffffed0
-
-rbp : 0x00
-
-rsi : 0x00
-
-rdi : 0x00
-
-r8  : 0xa4cdce6be1935500
-
-r9  : 0x00
-
-r10 : 0x1a1a1a
-
-r11 : 0x00
-
-r12 : 0x00
-
-r13 : 0x00
 ```
 
 ```
@@ -457,3 +432,63 @@ r13 : 0x00
 0000000000402008 8b c2 50 8d 25 c7 1c 08
 0000000000402010 00 55 93 e1 6b ce cd a4
 0000000000402018 f2 1a 1a
+
+
+Else 
+```
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+lea rsp, [b1]
+
+
+.data
+b1: .quad 0x00375a02ffc0d713
+.quad 0x081cc7258d50c28b
+.quad 0xa4cdce6be1935500
+.long 0x1a1a1a
+
+0000000000402000 13 d7 c0 ff 02 5a 37 00
+0000000000402008 8b c2 50 8d 25 c7 1c 08
+0000000000402010 00 55 93 e1 6b ce cd a4
+0000000000402018 1a 1a 1a
+
+``` 
+
+
+## Another method
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+lea rsp , [mem]
+lea rsi , [mem]
+
+mov rax , 0x00375a02ffc0d713
+mov [rsi] , rax
+add rsi , 8
+mov rax ,0xa4cdce6be1935500
+mov [rsi] , rax 
+add rsi , 8
+mov rax , 0x081cc7258d50c28b
+mov [rsi],rax
+add rsi , 8
+mov eax , 0x0a0a0a
+mov [rsi] , eax
+
+
+
+.data
+ 
+mem: .skip 1024 , 0xff
+
+```
+![register output](/images/reg_dataout.png)
