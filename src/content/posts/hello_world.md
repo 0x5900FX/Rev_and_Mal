@@ -1,6 +1,6 @@
 ---
 title: "Hello World in Assembly"
-date: 2026-05-02
+date: 2026-05-15
 tags: [Learning]
 description: Learning Assembly in a new way
 ---
@@ -144,3 +144,49 @@ r8  = 5th argument
 r9  = 6th argument
 syscall
 ```
+
+
+## Challenge 
+Output 2 string to terminal and exit with code 99 and then code 0
+
+```
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+
+mov rax , 1
+mov rdi , 1
+lea rsi ,[string_data]
+lea rdx , [count]
+syscall
+
+mov rax , 1 
+mov rdi ,1 
+lea rsi , [string_sec]
+lea rdx , [count]
+syscall
+
+mov rax , 60
+mov rdi , 99
+syscall
+
+
+
+.data
+string_data: .ascii "hello gamers\n"
+count = . - string_data
+string_sec: .ascii "what's up ??"
+count = . - string_sec
+
+```
+
+```
+
+mov rax , 60
+xor rdi , rdi
+syscall
+
+```
+We can do this to exit with code 0.
