@@ -1,9 +1,5 @@
----
-title: "IDA & Intro to x86"
-date: 2026-05-11
-tags: [Learning]
-description: S
----
+
+
 
 
 The x86 Architecture

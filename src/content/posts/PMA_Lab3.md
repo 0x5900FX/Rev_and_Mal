@@ -158,6 +158,7 @@ Checking memory and image we can identify the strings inclusion like 'practicalm
 
 Create a log file named after `practicalmalwareanalysis.log`
 
+
 ### 4. What is the purpose of this program?
 
 It's a keylogger that uses process replacement to replace `svchost.exe` .
