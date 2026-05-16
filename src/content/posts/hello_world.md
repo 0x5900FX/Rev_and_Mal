@@ -304,3 +304,49 @@ This is effectively a custom calling convention where:
 Caller stores return address in a callee-saved register (r12)
 
 Callee jumps back via jmp r12 instead of ret
+
+
+Running program label inside another one
+```
+
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+
+lea r12 , [return]
+jmp print
+
+return:
+jmp exit 
+
+exit:
+mov rax , 60
+xor rdi , rdi 
+syscall
+
+
+print:
+mov rax , 1 
+mov rdi , 1
+lea rsi , [string_data]
+lea rdx , [count_1]
+syscall
+jmp print_another_word
+
+print_another_word:
+mov rax , 1 
+mov rdi , 1
+lea rsi , [string_sec]
+lea rdx , [count_2 ]
+syscall
+jmp r12
+
+.data
+string_data: .ascii "hello gamers\n"
+count_1 = . - string_data
+string_sec: .ascii "what's up ??"
+count_2 = . - string_sec
+```
+
