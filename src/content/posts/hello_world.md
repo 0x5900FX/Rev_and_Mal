@@ -190,3 +190,117 @@ syscall
 
 ```
 We can do this to exit with code 0.
+
+
+
+
+## Using jump in Assembly.
+
+
+`JMP` command is use to memory lable that we mentioned.
+Like a function in a program JMP is used to jump forth and back bet'n two lables
+
+```
+
+print:
+mov rax , 1 
+mov rdi , 1
+lea rsi , [string_data]
+lea rdx , [count_1]
+syscall
+
+exit:
+mov rax , 60
+xor rdi , rdi 
+syscall
+```
+
+It can be donw with `lable` name and :
+
+```
+jmp print
+
+exit:
+mov rax , 60
+xor rdi , rdi 
+syscall
+
+
+print:
+mov rax , 1 
+mov rdi , 1
+lea rsi , [string_data]
+lea rdx , [count_1]
+syscall
+jmp exit
+
+
+Running 
+
+jmp print
+jmp exit 
+
+without jmp exit in print will led to seg fault. 
+
+So we use stack there..
+It uses two keyword. RET & CALL
+
+Example to show how to use `jmp`
+
+```
+
+Dynamic stack 
+
+```
+We stored mem address for exit & store at r12.
+After the end of print label it'll point to r12 which contains the address for exit label.
+
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+
+lea r12 , [return]
+jmp print
+
+return:
+jmp exit 
+
+exit:
+mov rax , 60
+xor rdi , rdi 
+syscall
+
+
+print:
+mov rax , 1 
+mov rdi , 1
+lea rsi , [string_data]
+lea rdx , [count_1]
+syscall
+jmp r12
+
+
+.data
+string_data: .ascii "hello gamers\n"
+count_1 = . - string_data
+string_sec: .ascii "what's up ??"
+count_2 = . - string_sec
+```
+
+Dynamic return mechanism using a preserved register:
+
+The code implements a manual indirect jump where r12 serves as a stored return address:
+
+lea r12, [return] → loads the absolute address of return into r12
+
+jmp print → tail-calls the print routine (no stack frame)
+
+jmp r12 in print → indirect jump to the pre-stored address in r12
+
+This is effectively a custom calling convention where:
+
+Caller stores return address in a callee-saved register (r12)
+
+Callee jumps back via jmp r12 instead of ret
