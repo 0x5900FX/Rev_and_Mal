@@ -354,3 +354,54 @@ count_2 = . - string_sec
 
 
 ...
+
+
+```
+
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+lea r15, [callstack]
+lea rsp , [r15]
+lea r15 , [resume_here]
+
+lea rbx , [resume_here]
+jmp print
+
+resume_here:
+jmp exit 
+
+exit:
+mov rax , 60
+xor rdi , rdi 
+syscall
+jmp r15
+
+
+print:
+mov rax , 1 
+mov rdi , 1
+lea rsi , [string_data]
+lea rdx , [count_1]
+syscall
+jmp print_goodbye
+
+print_goodbye:
+mov rax , 1 
+mov rdi , 1
+lea rsi , [string_sec]
+lea rdx , [count_2 ]
+syscall
+jmp r15
+
+.data
+
+callstack: .skip 4096 , 0xf1
+
+string_data: .ascii "hello gamers\n"
+count_1 = . - string_data
+string_sec: .ascii "gooodbye"
+count_2 = . - string_sec
+```
