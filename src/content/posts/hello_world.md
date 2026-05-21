@@ -402,8 +402,6 @@ string_sec: .ascii "gooodbye"
 count_2 = . - string_sec
 ```
 
-
-
 ### Creating our own Callstack
 
 ```
@@ -546,6 +544,90 @@ We use `POP & PUSH` to push data to stack
 
 ---
 
-Challenege
-Using infinity loop with
+Challenge
+Using infinity loop with jmp
 ret and call to write fibonacci sequence and push it to stack
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+call starting
+call loop
+
+end:
+mov rax, 60
+xor rdi , rdi
+syscall
+
+starting: 
+mov rax , 0
+mov rbx , rax
+inc rbx
+ret
+
+loop:
+ mov rcx , rbx
+ add rcx , rax
+
+push rcx
+
+mov rax, rbx
+mov rbx, rcx
+
+call loop
+
+ret
+
+;  ps just do it using jmp not using call huhuhu
+
+```
+
+
+```
+Uisng jmp instead of call
+
+
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+call starting
+jmp jmp_loop
+
+end:
+mov rax, 60
+xor rdi , rdi
+syscall
+
+starting: 
+mov rax , 0
+mov rbx , rax
+inc rbx
+ret
+
+
+
+jmp_loop:
+ mov rcx , rbx
+ add rcx , rax
+
+push rcx
+
+mov rax, rbx
+mov rbx, rcx
+jmp jmp_loop
+
+
+```
