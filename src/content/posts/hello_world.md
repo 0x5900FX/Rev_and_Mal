@@ -4,8 +4,8 @@ date: 2026-05-15
 tags: [Learning]
 description: Learning Assembly in a new way
 ---
+## How would you tell to print the data ?
 
-## How would you tell to print the data ? 
 printf("Hello, world!");
 
 "Hello, world" -> goes into .data segment
@@ -25,6 +25,7 @@ SYSCALL(WRITE, TERMINAL,0x4000 , 13)
 ---
 
 Which register to populate??
+
 ```
 Role	Register
 Syscall ID	%rax
@@ -45,10 +46,11 @@ Write(terminal ,addr, len);
 
 ```
 
-# SYSCALL 
-  The system call is the fundamental interface between an application and the Linux kernel. Defines what services to execute.
+# SYSCALL
 
-Syscall table contains of important syscall num to define what operation to execute. 
+The system call is the fundamental interface between an application and the Linux kernel. Defines what services to execute.
+
+Syscall table contains of important syscall num to define what operation to execute.
 can be founded on https://filippo.io/linux-syscall-table/
 
 ```
@@ -65,6 +67,7 @@ The return value is placed in %rax.
 7	poll	poll(2)	sys_poll
 8	lseek	lseek(2)	sys_lseek
 ```
+
 ```
 Standard File Descriptors
 Every new process starts with three default file descriptors inherited from its parent process (typically the shell): 
@@ -74,7 +77,6 @@ FD 	Name	Default Purpose	Default Source/Sink
 1	stdout	Standard Output	Terminal/Console
 2	stderr	Standard Error	Terminal/Console
 ```
-
 
 Writing "hello world" to output
 
@@ -100,10 +102,10 @@ syscall
 hwlodata: .byte 'h','e','l','l','o',' ','w','o','r','l','d'
 ```
 
-Thus we can print Hello would 
+Thus we can print Hello would
 
+Another way to do it
 
-Another way to do it 
 ```
 ;#---------------------
 ;#  GNU Assembler file
@@ -119,7 +121,7 @@ mov rax , 1     #syscall write
 mov rdi ,1      #fd = stdout
 lea rsi , [a_helo]  #location of string
 lea rdx , [hellolen]    #string length
-syscall     
+syscall   
 
 mov rax , 60        #syscall code for exit
 xor rdi , rdi    # clear rdi -> exit code = 0 (success)
@@ -133,7 +135,6 @@ hellolen  = . - a_helo
 Using syscall code 60. We can exit with msg `program terminated with Exit(1)`
 rather than `Program terminated with Exit(139) due to signal SIGSEGV: Invalid memory reference.`
 
-
 ```
 rax = syscall number
 rdi = 1st argument
@@ -145,8 +146,8 @@ r9  = 6th argument
 syscall
 ```
 
+## Challenge
 
-## Challenge 
 Output 2 string to terminal and exit with code 99 and then code 0
 
 ```
@@ -189,13 +190,10 @@ xor rdi , rdi
 syscall
 
 ```
+
 We can do this to exit with code 0.
 
-
-
-
 ## Using jump in Assembly.
-
 
 `JMP` command is use to memory lable that we mentioned.
 Like a function in a program JMP is used to jump forth and back bet'n two lables
@@ -249,7 +247,7 @@ Example to show how to use `jmp`
 
 ```
 
-Dynamic stack 
+Dynamic stack
 
 ```
 We stored mem address for exit & store at r12.
@@ -305,8 +303,8 @@ Caller stores return address in a callee-saved register (r12)
 
 Callee jumps back via jmp r12 instead of ret
 
-
 Running program label inside another one
+
 ```
 
 .intel_syntax noprefix
@@ -350,11 +348,9 @@ string_sec: .ascii "what's up ??"
 count_2 = . - string_sec
 ```
 
-##  CallStack
-
+## CallStack
 
 ...
-
 
 ```
 
@@ -405,3 +401,151 @@ count_1 = . - string_data
 string_sec: .ascii "gooodbye"
 count_2 = . - string_sec
 ```
+
+
+
+### Creating our own Callstack
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+
+.intel_syntax noprefix        ; Use Intel assembly syntax
+.global _start                ; Make _start visible to linker
+.text
+
+_start:
+
+ lea r15 , [callstack]        ; r15 = custom call stack pointer
+ lea rsp , [callstack]        ; Move real stack pointer to our stack area
+ lea rax , [resume_here]      ; Load address to return after function call
+ mov [r15] , rax              ; Push return address into custom stack
+ add r15 , 8                  ; Move stack pointer forward (push)
+
+ jmp say_hello                ; Jump to first "function"
+
+
+
+resume_here:
+ jmp exit                     ; Continue program after returning
+
+
+exit:
+mov rax , 60                  ; syscall: exit
+xor rdi , rdi                 ; exit status = 0
+syscall                       ; terminate program
+
+
+
+say_hello:
+mov rax , 1                   ; syscall: write
+mov rdi , 1                   ; file descriptor = stdout
+lea rsi , [text]              ; address of message
+lea rdx , [strlen]            ; message length
+syscall                       ; print "Hello world bro"
+
+lea rax , [resume_hello]      ; Address to resume after say_bye
+mov [r15] , rax               ; Push return address to custom stack
+add r15 , 8                   ; Move stack pointer forward
+
+jmp say_bye                   ; Call next routine manually
+
+
+
+resume_hello:
+sub r15 , 8                   ; Pop return address from custom stack
+mov rax , [r15]               ; Load return address
+jmp rax                       ; Jump back to caller
+
+
+
+say_bye:
+mov rax , 1                   ; syscall: write
+mov rdi , 1                   ; stdout
+lea rsi , [bye]               ; address of bye message
+lea rdx , [str_bye]           ; message length
+syscall                       ; print "bye see ya"
+
+sub r15 , 8                   ; Pop return address
+mov rax , [r15]               ; Load saved address
+jmp rax                       ; Return manually using custom stack
+
+
+
+.data
+
+callstack: .skip 4096, 0xff   ; Reserve 4KB memory for custom call stack
+
+text: .ascii "Hello world bro \n"
+strlen = . - text             ; Calculate string length
+
+bye: .ascii "bye see ya \n"
+str_bye = . - bye             ; Calculate bye string length
+```
+
+Here we made our own callstack that we can utilize for using functions.
+
+Using default stack
+
+`CALL & RET`
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+ 
+call say_hello
+ jmp exit
+
+exit:
+mov rax , 60
+xor rdi , rdi
+syscall
+
+say_hello:
+mov rax , 1
+mov rdi , 1
+lea rsi , [text]
+lea rdx , [strlen] 
+syscall
+call say_bye
+nop
+ret
+
+
+say_bye:
+mov rax , 1
+mov rdi , 1
+lea rsi , [bye]
+lea rdx , [str_bye]
+syscall
+nop
+ret
+
+
+
+.data
+text: .ascii "Hello world bro \n" 
+strlen= . - text
+bye: .ascii "bye see ya \n"
+str_bye = . - bye
+```
+
+Same code using default stack
+
+Pushing thing on stack
+We use `POP & PUSH` to push data to stack
+
+---
+
+Challenege
+Using infinity loop with
+ret and call to write fibonacci sequence and push it to stack
