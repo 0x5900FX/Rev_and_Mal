@@ -133,4 +133,53 @@ str: .ascii "New data \n"
 len = . - str
 
 ```
-Now moving on
+Now moving on to stringLen function
+
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+lea rdi , [str]
+call str_func
+int3
+
+exit:
+mov rax, 60
+xor rdi , rdi
+syscall 
+
+
+str_func:
+mov rsi , rdi
+
+loop:
+mov bl , [rsi]
+cmp bl , 0
+je func_exit
+inc rsi
+inc rcx
+jmp loop
+
+func_exit:
+int3
+mov rax, rcx
+ret
+
+;# passing argument in order
+;# rdi, rsi, rdx , rcx, r8, r9
+;#
+;#
+
+.data
+str: .asciz "Helloc"
+
+```
+
+here we generated our own StringLen fucntion which provide us or return us the num of characters in string that is supplied and is stored into 'rax'.
