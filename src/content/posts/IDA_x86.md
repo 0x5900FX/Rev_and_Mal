@@ -6,8 +6,6 @@ description: Learning Assembly in a new way
 ---
 
 
-
-
 The x86 Architecture
 
 The internals of most modern computer architectures (including x86) follow `the Von Neumann architecture`.

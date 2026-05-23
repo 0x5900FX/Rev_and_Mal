@@ -1,8 +1,8 @@
 ---
-title: "Dynamic analysis of a keylogger"
-date: 2026-05-02
+title: "If else statement in Asm."
+date: 2026-05-23
 tags: [Learning]
-description: Analyzing a keylogger dynamically.
+description: Utilizing assembly with conditioms.
 ---
 
 Using `CMP` to compare for value.
