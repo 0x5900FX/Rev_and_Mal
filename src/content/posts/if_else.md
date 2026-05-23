@@ -1,10 +1,9 @@
-```
-title: "Conditional statement in Assembly"
-date: 2026-05-22
+---
+title: "Dynamic analysis of a keylogger"
+date: 2026-05-02
 tags: [Learning]
-description: Learning Assembly in a new way
-```
-
+description: Analyzing a keylogger dynamically.
+---
 
 Using `CMP` to compare for value.
 
