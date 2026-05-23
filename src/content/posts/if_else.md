@@ -91,3 +91,46 @@ for (int i = 0 ; i < 10 ; i++){
 bodyy...
 
 }
+
+
+```code
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+;#for (int i = 0; i < 10; i++) {
+;#    print();
+;#}
+
+mov r15 , 0 
+compare:
+cmp r15 , 10
+jge exit
+inc r15
+call print
+jmp compare
+
+
+exit:
+mov rax , 60
+xor rdi , rdi
+syscall 
+
+print:
+mov rax , 1 
+mov rdi , 1
+lea rsi , [str]
+lea rdx , [len]
+syscall
+ret
+
+.data
+str: .ascii "New data \n"
+len = . - str
+
+```
