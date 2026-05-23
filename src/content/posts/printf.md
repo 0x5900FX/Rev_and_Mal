@@ -107,6 +107,10 @@ _start:
 
 lea rdi , [s2]
 call print
+
+lea rdi , [s1]
+call print
+
 call _exit
 
 _exit:
@@ -146,4 +150,145 @@ ret
 .data
 s1 : .asciz "Ahoy there!"
 s2 : .asciz "fuckiff there"
+```
+The major downside to this without checking other register is that the counter function is just going on withour being reset so it just goes on 
+while printing the result
+
+```
+$ /linker /program.o -o /program
+
+$ /program
+fuckiff there
+Ahoy there!
+fuckiff there
+```
+
+So to counter this we can adjus the following 
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+
+lea rdi , [s2]
+call print
+
+lea rdi , [s1]
+call print
+call _exit
+
+_exit:
+mov rax , 60
+xor rdi , rdi
+syscall
+
+print:
+call str_func
+
+mov rdx , rax
+mov rsi , rdi
+
+mov rax ,1  
+mov rdi , 1
+syscall
+int3
+ret
+
+str_func:
+xor rcx , rcx  ;# resetting the counter for string length fucntion i.e rcx register
+mov rsi , rdi
+
+loop:
+mov bl , [rsi]
+cmp bl , 0
+je func_exit
+inc rsi
+inc rcx
+jmp loop
+
+func_exit:
+mov rax, rcx
+ret
+
+
+
+.data
+s1 : .asciz "Ahoy there!\n"
+s2 : .asciz "fuckiff there\n"
+```
+
+
+Another issue will be the value for rdi..
+
+in `call str_func`
+we have `lea rdi , [s1]` before it storing the value in rdi
+
+but in somepoint of that function there can be change in value of registers that should be done manually..
+
+thus we come up with sol'n pusing `rdi` into stack.
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+
+lea rdi , [s2]
+call print
+
+lea rdi , [s1]
+call print
+call _exit
+
+_exit:
+mov rax , 60
+xor rdi , rdi
+syscall
+
+print:
+push rdi
+call str_func  ;# here even if the fucntion change the value of rdi then also it'll work as it's saved in stack
+pop rdi
+
+mov rdx , rax
+mov rsi , rdi
+
+mov rax ,1  
+mov rdi , 1
+syscall
+int3
+ret
+
+str_func:
+xor rcx , rcx
+mov rsi , rdi
+
+loop:
+mov bl , [rsi]
+cmp bl , 0
+je func_exit
+inc rsi
+inc rcx
+jmp loop
+
+func_exit:
+mov rax, rcx
+ret
+
+
+
+.data
+s1 : .asciz "Ahoy there!\n"
+s2 : .asciz "fuckiff there\n"
 ```
