@@ -91,7 +91,7 @@ CQO = Convert Quadword to Octoword
 
 It sign-extends:
 
-`RAX → into RDX:RAX`
+`RAX → into RDX:RAX`cd 
 
 Meaning:
 
@@ -111,3 +111,5 @@ After division:
 Quotient → RAX
 Remainder → RDX
 ```
+
+Converting `Int` to `String` using already learned data.
