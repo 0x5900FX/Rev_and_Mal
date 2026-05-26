@@ -113,3 +113,64 @@ Remainder → RDX
 ```
 
 Converting `Int` to `String` using already learned data.
+
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+mov rax , 5
+add rax,  '0' ;# 48
+mov [buf] , rax
+lea rdi , [buf]
+call print
+
+exit:
+mov rax , 60
+xor rdi , rdi
+syscall
+
+
+
+
+print:
+push rdi
+call str_func  ;# here even if the fucntion change the value of rdi then also it'll work as it's saved in stack
+pop rdi
+
+mov rdx , rax
+mov rsi , rdi
+
+mov rax ,1  
+mov rdi , 1
+syscall
+int3
+ret
+
+str_func:
+xor rcx , rcx
+mov rsi , rdi
+
+loop:
+mov bl , [rsi]
+cmp bl , 0
+je func_exit
+inc rsi
+inc rcx
+jmp loop
+
+func_exit:
+mov rax, rcx
+int3
+ret
+
+.data
+s1: .asciz "hello mate"
+buf: .skip 1024
+```
