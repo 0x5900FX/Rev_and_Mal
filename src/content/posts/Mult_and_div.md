@@ -125,7 +125,7 @@ Converting `Int` to `String` using already learned data.
 .text
 _start:
 
-mov rax , 5
+mov rax , 21
 add rax,  '0' ;# 48
 mov [buf] , rax
 lea rdi , [buf]
@@ -136,6 +136,16 @@ mov rax , 60
 xor rdi , rdi
 syscall
 
+
+_itoa:
+mov rbx , 10
+mov rax , rdi 
+lea rdi , [buff+32]
+;# mov dl , '\0'
+;# mov [rdi] , dl
+this and this do the same
+
+;#mov byte ptr [rdi] , '\0'
 
 
 
