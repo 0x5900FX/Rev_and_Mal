@@ -184,3 +184,70 @@ ret
 s1: .asciz "hello mate"
 buf: .skip 1024
 ```
+del this up one
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+mov rdi , 123
+call _itoa
+
+exit:
+mov rax , 60
+xor rdi , rdi
+syscall
+
+
+_itoa:
+mov rbx , 10
+mov rax , rdi 
+lea rdi , [buf+32]
+mov byte ptr [rdi] , '\0'
+
+_itoa_loop:
+xor rdx, rdx
+dec rdi 
+div rbx
+
+print:
+push rdi
+call str_func  ;# here even if the fucntion change the value of rdi then also it'll work as it's saved in stack
+pop rdi
+
+mov rdx , rax
+mov rsi , rdi
+
+mov rax ,1  
+mov rdi , 1
+syscall
+int3
+ret
+
+str_func:
+xor rcx , rcx
+mov rsi , rdi
+
+loop:
+mov bl , [rsi]
+cmp bl , 0
+je func_exit
+inc rsi
+inc rcx
+jmp loop
+
+func_exit:
+mov rax, rcx
+int3
+ret
+
+.data
+s1: .asciz "hello mate"
+buf: .skip 1024
+```
