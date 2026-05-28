@@ -125,10 +125,9 @@ Converting `Int` to `String` using already learned data.
 .text
 _start:
 
-mov rax , 21
-add rax,  '0' ;# 48
-mov [buf] , rax
-lea rdi , [buf]
+mov rdi , 123
+call _itoa
+mov rdi , rax
 call print
 
 exit:
@@ -140,81 +139,20 @@ syscall
 _itoa:
 mov rbx , 10
 mov rax , rdi 
-lea rdi , [buff+32]
-;# mov dl , '\0'
-;# mov [rdi] , dl
-this and this do the same
-
-;#mov byte ptr [rdi] , '\0'
-
-
-
-print:
-push rdi
-call str_func  ;# here even if the fucntion change the value of rdi then also it'll work as it's saved in stack
-pop rdi
-
-mov rdx , rax
-mov rsi , rdi
-
-mov rax ,1  
-mov rdi , 1
-syscall
-int3
-ret
-
-str_func:
-xor rcx , rcx
-mov rsi , rdi
-
-loop:
-mov bl , [rsi]
-cmp bl , 0
-je func_exit
-inc rsi
-inc rcx
-jmp loop
-
-func_exit:
-mov rax, rcx
-int3
-ret
-
-.data
-s1: .asciz "hello mate"
-buf: .skip 1024
-```
-del this up one
-
-```
-;#---------------------
-;#  GNU Assembler file
-;#  Syscall Hello World
-;#---------------------
-.intel_syntax noprefix
-.global _start
-.text
-_start:
-
-mov rdi , 123
-call _itoa
-
-exit:
-mov rax , 60
-xor rdi , rdi
-syscall
-
-
-_itoa:
-mov rbx , 10
-mov rax , rdi 
 lea rdi , [buf+32]
-mov byte ptr [rdi] , '\0'
+mov byte ptr [rdi] , 0
 
 _itoa_loop:
 xor rdx, rdx
 dec rdi 
+int3
 div rbx
+add rdx , '0'
+mov [rdi] , dl
+cmp rax , 0
+jne _itoa_loop
+mov rax , rdi 
+ret
 
 print:
 push rdi
@@ -250,4 +188,19 @@ ret
 .data
 s1: .asciz "hello mate"
 buf: .skip 1024
+```
+
+Output
+```
+$ /program
+123
+$ /assembler /assembly.s -o /program.o
+/assembly.s: Assembler messages:
+/assembly.s: Warning: end of file not at end of a line; newline inserted
+
+$ /linker /program.o -o /program
+
+$ /program
+123978
+
 ```
