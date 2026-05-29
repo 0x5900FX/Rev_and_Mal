@@ -206,4 +206,98 @@ $ /program
 ```
 
 
-Challenge for this 
+Challenge for THIS
+
+
+Convert the number inputed into binary
+
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+mov rdi , 12
+call _itob
+mov rdi , rax 
+call print
+
+exit:
+mov rax , 60
+xor rdi , rdi
+syscall
+
+
+_itoa:
+mov rbx , 10
+mov rax , rdi 
+lea rdi , [buf+32]
+mov byte ptr [rdi] , 0
+
+_itoa_loop:
+xor rdx, rdx
+dec rdi 
+div rbx
+add rdx , '0'
+mov [rdi] , dl
+cmp rax , 0
+jne _itoa_loop
+mov rax , rdi 
+ret
+
+
+
+_itob:
+mov rbx , 2
+mov rax , rdi 
+lea rdi , [buf+32]
+mov byte ptr [rdi] , 0
+
+_itob_loop:
+xor rdx, rdx
+dec rdi 
+div rbx
+add rdx , '0'
+mov [rdi] , dl
+cmp rax , 0
+jne _itob_loop
+mov rax , rdi 
+ret
+print:
+push rdi
+call str_func  ;# here even if the fucntion change the value of rdi then also it'll work as it's saved in stack
+pop rdi
+
+mov rdx , rax
+mov rsi , rdi
+
+mov rax ,1  
+mov rdi , 1
+syscall
+ret
+
+str_func:
+xor rcx , rcx
+mov rsi , rdi
+
+loop:
+mov bl , [rsi]
+cmp bl , 0
+je func_exit
+inc rsi
+inc rcx
+jmp loop
+
+func_exit:
+mov rax, rcx
+ret
+
+.data
+s1: .asciz "hello mate"
+buf: .skip 1024
+```
