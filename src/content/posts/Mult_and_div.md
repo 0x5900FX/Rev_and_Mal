@@ -391,3 +391,125 @@ s2 : .asciz "fuckiff there\n"
 buff: .skip 1024
 
 ```
+
+tying two diff func
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+
+
+mov rdi , 12
+push rdi
+call _itoa
+int3
+mov rdi , rax
+call print
+
+int3
+
+pop rdi
+call _itob
+mov rdi, rax
+call print
+
+call exit
+
+  ;# sys_exit
+exit:
+  mov rax, 60
+  xor rdi, rdi
+  syscall
+
+
+_itob:
+int3
+mov rbx , 2  ;# divisor
+mov rax , rdi
+lea  rdi , [buff + 32]
+mov byte ptr [rdi] , 0
+dec rdi
+mov byte ptr [rdi] , '\n'
+
+
+itob_loop:
+xor rdx , rdx
+dec rdi
+div rbx
+add dl , '0'
+mov byte ptr [rdi] , dl
+cmp rax , 0
+jnz itob_loop
+mov rax , rdi
+ret
+
+
+_itoa:
+int3
+mov rbx , 10  ;# divisor
+mov rax , rdi
+lea  rdi , [buff + 32]
+mov byte ptr [rdi] , 0
+dec rdi
+mov byte ptr [rdi] , '\n'
+
+itoa_loop:
+xor rdx , rdx
+dec rdi
+div rbx
+add dl , '0'
+mov byte ptr [rdi] , dl
+cmp rax , 0
+jnz itoa_loop
+mov rax , rdi
+ret
+
+print:
+push rdi
+call str_func  ;# here even if the fucntion change the value of rdi then also it'll work as it's saved in stack
+pop rdi
+
+mov rdx , rax
+mov rsi , rdi
+
+mov rax ,1  
+mov rdi , 1
+syscall
+int3
+ret
+
+str_func:
+xor rcx , rcx
+mov rsi , rdi
+
+loop:
+mov bl , [rsi]
+cmp bl , 0
+je func_exit
+inc rsi
+inc rcx
+jmp loop
+
+func_exit:
+mov rax, rcx
+ret
+
+
+
+.data
+s1 : .asciz "Ahoy there!\n"
+s2 : .asciz "fuckiff there\n"
+
+
+
+.data
+buff: .skip 1024
+
+```
