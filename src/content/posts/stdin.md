@@ -7,6 +7,8 @@ description: utilizing syscall for stdin.
 
 Reading using syscall
 
+Here we are using syscall `Stdin` and `Stdout` to read the data from terminal and output to terminal.
+
 ```
 ;#---------------------
 ;#  GNU Assembler file
