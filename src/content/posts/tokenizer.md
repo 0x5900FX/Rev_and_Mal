@@ -1,6 +1,6 @@
 ---
 title: "Writing a tokenizer in Asm"
-date: 2026-05-25
+date: 2026-06-04
 tags: [Learning]
 description: Using tokenizer to use in System.
 ---
