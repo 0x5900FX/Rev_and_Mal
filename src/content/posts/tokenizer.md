@@ -283,3 +283,115 @@ findend / skipwhite: Simple traversal loops. findend stops at ' ' or 0x0. skipwh
 | `findend` | Traverses a string until it finds a space or a null byte. |
 | `skipwhite` | Traverses a string, skipping over consecutive space characters. |
 
+
+
+Comparing the string
+
+//#; will be tranferring this content to another post.
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+lea rdi , [s1]
+lea rsi , [s2]
+call strcmp
+int3
+
+cmp al , 0
+je match
+jne nomatch
+call exit
+
+
+
+
+
+exit:
+mov rax , 60
+xor rdi , rdi
+syscall
+
+match:
+lea rdi , [s_match]
+call _print
+call exit
+
+nomatch:
+lea rdi , [s_no_match]
+call _print
+call exit
+
+strcmp:
+mov al , [rdi]
+mov dl , [rsi]
+cmp al , dl
+
+jne sc.done
+
+cmp al , 0
+je sc.done
+
+inc rdi
+inc rsi
+jmp strcmp
+
+sc.done:
+sub al , dl
+int3
+ret
+
+_print:
+        push rdi
+        call slen
+        pop rsi
+        mov rdx, rax
+        mov rax, 1
+        mov rdi, 1
+        syscall
+        ret
+      
+_println:
+        push rdi
+        call slen
+        pop rsi
+        mov rdx, rax
+        mov rax, 1
+        mov rdi, 1
+        syscall
+                
+        
+        mov rax, 1
+        mov rdi, 1
+        lea rsi , [newline]
+        mov rdx , 1
+        syscall
+        ret
+      
+
+slen:
+    xor rcx, rcx
+ .loop:
+    cmp byte ptr [rdi + rcx], 0
+    je .done
+    inc rcx
+    jmp .loop
+ .done:
+    mov rax, rcx
+    ret
+
+.data
+s1: .asciz "heello"
+s2: .asciz "heello"
+newline: .byte '\n'
+s_match: .asciz "It's a match for string \n"
+s_no_match: .asciz "It's not a match for string \n"
+
+
+```
