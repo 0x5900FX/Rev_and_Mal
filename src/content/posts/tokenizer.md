@@ -395,3 +395,140 @@ s_no_match: .asciz "It's not a match for string \n"
 
 
 ```
+
+Challange : Check only a n number of strings.
+
+```
+;#---------------------
+;#  GNU Assembler file
+;#  Syscall Hello World
+;#---------------------
+.intel_syntax noprefix
+.global _start
+.text
+_start:
+
+lea rdi , [s1]
+lea rsi , [s2]
+mov rdx , 14
+call n_strcmp
+int3
+
+cmp al , 0
+je match
+jne nomatch
+call exit
+
+
+
+
+
+exit:
+mov rax , 60
+xor rdi , rdi
+syscall
+
+match:
+lea rdi , [s_match]
+call _print
+call exit
+
+nomatch:
+lea rdi , [s_no_match]
+call _print
+call exit
+
+strcmp:
+mov al , [rdi]
+mov dl , [rsi]
+cmp al , dl
+
+jne sc.done
+
+cmp al , 0
+je sc.done
+
+inc rdi
+inc rsi
+jmp strcmp
+
+sc.done:
+sub al , dl
+int3
+ret
+
+
+n_strcmp:
+
+mov rcx , rdx
+snc.loop:
+dec rcx
+
+mov al , [rdi]
+mov dl , [rsi]
+cmp al , dl
+
+jne snc.done
+
+cmp al , 0
+je snc.done
+
+cmp rcx , 0
+je snc.done
+
+inc rdi
+inc rsi
+jmp snc.loop
+
+snc.done:
+sub al , dl
+int3
+ret
+
+_print:
+        push rdi
+        call slen
+        pop rsi
+        mov rdx, rax
+        mov rax, 1
+        mov rdi, 1
+        syscall
+        ret
+      
+_println:
+        push rdi
+        call slen
+        pop rsi
+        mov rdx, rax
+        mov rax, 1
+        mov rdi, 1
+        syscall
+                
+        
+        mov rax, 1
+        mov rdi, 1
+        lea rsi , [newline]
+        mov rdx , 1
+        syscall
+        ret
+      
+
+slen:
+    xor rcx, rcx
+ .loop:
+    cmp byte ptr [rdi + rcx], 0
+    je .done
+    inc rcx
+    jmp .loop
+ .done:
+    mov rax, rcx
+    ret
+
+.data
+s1: .asciz "what's up bebo"
+s2: .asciz "what's up baby"
+newline: .byte '\n'
+s_match: .asciz "It's a match for string \n"
+s_no_match: .asciz "It's not a match for string \n"
+
+```
