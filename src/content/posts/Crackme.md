@@ -48,4 +48,35 @@ Observing the binary on `ida` we can see that it uses password to verify and unl
 
 Then i observed the data section which used `actual password` acryonyms to compare for passwords. It was in byte form. If we extract quad word from it. We can get the password.
 
-Which is ||Hidden text||
+<details> <summary>The password is </summary>SecurePass_2k26_X64_Reverse</details>
+
+Then we're able to get the flags sequentially. 
+
+
+<details>
+
+```
+
+================================================
+   REVERSE ENGINEERING CHALLENGE v3.14159
+================================================
+
+[*] This binary contains 3 hidden flags
+[*] Your mission:
+    1. Bypass the password verification
+    2. Decrypt the 3 flags from memory
+
+[>] Enter password: SecurePass_2k26_X64_Reverse
+
+
+[+] PASSWORD VERIFIED!
+[+] Extracting hidden flags...
+
+<FLAG>CRYPTO_KEY_ALPHA_2026</FLAG>
+<FLAG>REVERSE_ENGINEERING_CHALLENGE</FLAG>
+<FLAG>MEMORY_HIDDEN_GAMMA_X64</FLAG>
+
+```
+
+
+</details>
